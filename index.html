@@ -7,54 +7,80 @@
 <title>Doações Solidárias</title>
 
 <style>
+* { box-sizing: border-box; }
+
 body {
+    margin: 0;
     font-family: Arial, sans-serif;
-    background: #f2f5f2;
-    color: #222;
-    padding: 20px;
-    transition: 0.3s;
+    background: #f1f5f2;
+    color: #26352b;
+    font-size: 16px;
 }
 
 header {
     background: #247a4b;
     color: white;
-    padding: 30px;
+    padding: 25px;
     text-align: center;
-    border-radius: 10px;
 }
 
-main {
-    background: white;
-    padding: 20px;
-    margin-top: 20px;
-    border-radius: 10px;
-}
-
-input, button {
-    padding: 12px;
-    margin: 8px 0;
-    width: 100%;
-    box-sizing: border-box;
-    font-size: 16px;
-}
-
-button {
-    background: #247a4b;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-button:hover {
+nav {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: 15px;
     background: #185c36;
 }
 
-.doacao {
-    background: #e5f4e9;
-    padding: 12px;
-    margin: 10px 0;
+button {
+    padding: 12px 18px;
+    border: none;
     border-radius: 6px;
+    background: #247a4b;
+    color: white;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+nav button { background: white; color: #185c36; }
+
+button:hover { opacity: .85; }
+
+main {
+    max-width: 850px;
+    margin: 30px auto;
+    padding: 25px;
+}
+
+.tela {
+    display: none;
+    background: white;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px #0001;
+}
+
+.tela.ativa { display: block; }
+
+input, textarea {
+    width: 100%;
+    padding: 13px;
+    margin: 8px 0 18px;
+    border: 1px solid #aaa;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+.doacao {
+    padding: 15px;
+    margin: 12px 0;
+    background: #e5f4e9;
+    border-radius: 8px;
+}
+
+.acessibilidade button {
+    margin: 8px;
 }
 
 .alto-contraste {
@@ -62,15 +88,28 @@ button:hover {
     color: yellow;
 }
 
-.alto-contraste main,
+.alto-contraste header,
+.alto-contraste nav {
+    background: black;
+    border-bottom: 2px solid yellow;
+}
+
+.alto-contraste .tela,
 .alto-contraste .doacao {
     background: #222;
     color: yellow;
+    border: 1px solid yellow;
 }
 
-.alto-contraste header {
-    background: black;
-    border: 2px solid yellow;
+.alto-contraste nav button {
+    background: yellow;
+    color: black;
+}
+
+footer {
+    text-align: center;
+    padding: 20px;
+    color: #555;
 }
 </style>
 </head>
@@ -79,35 +118,54 @@ button:hover {
 
 <header>
     <h1>Doações Solidárias ❤️</h1>
-    <p>Ajude quem precisa. Sua doação transforma vidas!</p>
+    <p>Compartilhar é transformar vidas!</p>
 </header>
+
+<nav>
+    <button onclick="mostrarTela('inicio')">Início</button>
+    <button onclick="mostrarTela('cadastro')">Doações</button>
+    <button onclick="mostrarTela('acessibilidade')">Acessibilidade</button>
+</nav>
 
 <main>
 
-    <h2>Acessibilidade</h2>
+<section id="inicio" class="tela ativa">
+    <h2>Bem-vindo à nossa plataforma!</h2>
 
-    <button onclick="alternarContraste()">
-        Ativar ou desativar alto contraste
+    <p>
+    Nosso objetivo é conectar pessoas que desejam doar
+    com pessoas que precisam de ajuda.
+    </p>
+
+    <h3>Faça parte dessa corrente do bem!</h3>
+
+    <p>
+    Você pode contribuir com alimentos, roupas,
+    produtos de higiene e outros itens essenciais.
+    </p>
+
+    <button onclick="mostrarTela('cadastro')">
+        Quero fazer uma doação
     </button>
 
-    <button onclick="alterarFonte(2)">
-        Aumentar fonte
+    <button onclick="mostrarTela('acessibilidade')">
+        Recursos de acessibilidade
     </button>
+</section>
 
-    <button onclick="alterarFonte(-2)">
-        Diminuir fonte
-    </button>
+<section id="cadastro" class="tela">
+    <h2>Cadastro de doações</h2>
 
-    <h2>Cadastre uma doação</h2>
+    <p>Cadastre um item que deseja compartilhar.</p>
 
     <form id="formulario">
         <label for="item">Nome do item:</label>
-        <input id="item" type="text"
-        placeholder="Ex: Cesta básica" required>
+        <input id="item" required
+        placeholder="Ex: Cesta básica">
 
         <label for="descricao">Descrição:</label>
-        <input id="descricao" type="text"
-        placeholder="Descreva a doação" required>
+        <textarea id="descricao" required
+        placeholder="Descreva sua doação"></textarea>
 
         <button type="submit">Cadastrar doação</button>
     </form>
@@ -117,50 +175,103 @@ button:hover {
     <div id="lista">
         <p>Nenhuma doação cadastrada ainda.</p>
     </div>
+</section>
+
+<section id="acessibilidade" class="tela">
+    <h2>Opções de acessibilidade</h2>
+
+    <p>
+    Nossa plataforma oferece recursos para facilitar
+    a leitura e a navegação.
+    </p>
+
+    <div class="acessibilidade">
+        <h3>Contraste da tela</h3>
+        <button onclick="alternarContraste()">
+            Ativar ou desativar alto contraste
+        </button>
+
+        <h3>Tamanho da fonte</h3>
+        <button onclick="alterarFonte(2)">
+            Aumentar fonte (+)
+        </button>
+
+        <button onclick="alterarFonte(-2)">
+            Diminuir fonte (-)
+        </button>
+
+        <button onclick="alterarFonte(0)">
+            Restaurar fonte
+        </button>
+    </div>
+
+    <h3>Inclusão para todos</h3>
+    <p>
+    Os recursos de acessibilidade ajudam pessoas
+    com dificuldades visuais a utilizar a plataforma
+    com mais conforto e autonomia.
+    </p>
+</section>
 
 </main>
 
-<script>
-let tamanhoFonte = 16;
+<footer>
+    <p>Doações Solidárias - Juntos podemos ajudar! ❤️</p>
+</footer>
 
-function alternarContraste() {
-    document.body.classList.toggle("alto-contraste");
+<script>
+function mostrarTela(id) {
+    document.querySelectorAll('.tela').forEach(tela => {
+        tela.classList.remove('ativa');
+    });
+
+    document.getElementById(id).classList.add('ativa');
+    window.scrollTo(0, 0);
 }
+
+let fonte = 16;
 
 function alterarFonte(valor) {
-    tamanhoFonte += valor;
-    tamanhoFonte = Math.max(12, Math.min(28, tamanhoFonte));
-    document.body.style.fontSize = tamanhoFonte + "px";
+    if (valor === 0) {
+        fonte = 16;
+    } else {
+        fonte = Math.max(12, Math.min(28, fonte + valor));
+    }
+
+    document.body.style.fontSize = fonte + 'px';
 }
 
-document.getElementById("formulario")
-.addEventListener("submit", function(event) {
+function alternarContraste() {
+    document.body.classList.toggle('alto-contraste');
+}
+
+document.getElementById('formulario')
+.addEventListener('submit', function(event) {
     event.preventDefault();
 
-    const item = document.getElementById("item").value.trim();
-    const descricao = document.getElementById("descricao").value.trim();
+    const item = document.getElementById('item').value.trim();
+    const descricao = document.getElementById('descricao').value.trim();
 
     if (!item || !descricao) return;
 
-    const mensagem = document.createElement("div");
-    mensagem.className = "doacao";
+    const lista = document.getElementById('lista');
 
-    const titulo = document.createElement("strong");
-    titulo.textContent = item;
-
-    const texto = document.createElement("p");
-    texto.textContent = descricao;
-
-    mensagem.appendChild(titulo);
-    mensagem.appendChild(texto);
-
-    const lista = document.getElementById("lista");
-
-    if (lista.querySelector("p")) {
-        lista.innerHTML = "";
+    if (lista.querySelector('p')) {
+        lista.innerHTML = '';
     }
 
-    lista.appendChild(mensagem);
+    const card = document.createElement('div');
+    card.className = 'doacao';
+
+    const titulo = document.createElement('h3');
+    titulo.textContent = item;
+
+    const texto = document.createElement('p');
+    texto.textContent = descricao;
+
+    card.appendChild(titulo);
+    card.appendChild(texto);
+    lista.appendChild(card);
 
     this.reset();
 });
