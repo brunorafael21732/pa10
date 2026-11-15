@@ -11,13 +11,14 @@ body {
     font-family: Arial, sans-serif;
     background: #f2f5f2;
     color: #222;
-    padding: 25px;
+    padding: 20px;
+    transition: 0.3s;
 }
 
 header {
     background: #247a4b;
     color: white;
-    padding: 25px;
+    padding: 30px;
     text-align: center;
     border-radius: 10px;
 }
@@ -31,26 +32,45 @@ main {
 
 input, button {
     padding: 12px;
-    margin: 7px 0;
+    margin: 8px 0;
     width: 100%;
     box-sizing: border-box;
+    font-size: 16px;
 }
 
 button {
     background: #247a4b;
     color: white;
     border: none;
+    border-radius: 5px;
     cursor: pointer;
 }
 
-.contraste {
+button:hover {
+    background: #185c36;
+}
+
+.doacao {
+    background: #e5f4e9;
+    padding: 12px;
+    margin: 10px 0;
+    border-radius: 6px;
+}
+
+.alto-contraste {
     background: black;
     color: yellow;
 }
 
-.contraste main {
+.alto-contraste main,
+.alto-contraste .doacao {
     background: #222;
     color: yellow;
+}
+
+.alto-contraste header {
+    background: black;
+    border: 2px solid yellow;
 }
 </style>
 </head>
@@ -63,41 +83,84 @@ button {
 </header>
 
 <main>
-    <button onclick="document.body.classList.toggle('contraste')">
-        Ativar alto contraste
+
+    <h2>Acessibilidade</h2>
+
+    <button onclick="alternarContraste()">
+        Ativar ou desativar alto contraste
     </button>
 
-    <button onclick="document.body.style.fontSize='22px'">
+    <button onclick="alterarFonte(2)">
         Aumentar fonte
+    </button>
+
+    <button onclick="alterarFonte(-2)">
+        Diminuir fonte
     </button>
 
     <h2>Cadastre uma doação</h2>
 
     <form id="formulario">
-        <label>Nome do item:</label>
-        <input id="item" type="text" placeholder="Ex: Cesta básica" required>
+        <label for="item">Nome do item:</label>
+        <input id="item" type="text"
+        placeholder="Ex: Cesta básica" required>
 
-        <label>Descrição:</label>
-        <input id="descricao" type="text" placeholder="Descreva a doação">
+        <label for="descricao">Descrição:</label>
+        <input id="descricao" type="text"
+        placeholder="Descreva a doação" required>
 
         <button type="submit">Cadastrar doação</button>
     </form>
 
     <h2>Doações disponíveis</h2>
-    <ul id="lista"></ul>
+
+    <div id="lista">
+        <p>Nenhuma doação cadastrada ainda.</p>
+    </div>
+
 </main>
 
 <script>
-document.getElementById("formulario").addEventListener("submit", function(event) {
+let tamanhoFonte = 16;
+
+function alternarContraste() {
+    document.body.classList.toggle("alto-contraste");
+}
+
+function alterarFonte(valor) {
+    tamanhoFonte += valor;
+    tamanhoFonte = Math.max(12, Math.min(28, tamanhoFonte));
+    document.body.style.fontSize = tamanhoFonte + "px";
+}
+
+document.getElementById("formulario")
+.addEventListener("submit", function(event) {
     event.preventDefault();
 
-    const item = document.getElementById("item").value;
-    const descricao = document.getElementById("descricao").value;
+    const item = document.getElementById("item").value.trim();
+    const descricao = document.getElementById("descricao").value.trim();
 
-    const li = document.createElement("li");
-    li.textContent = item + " - " + descricao;
+    if (!item || !descricao) return;
 
-    document.getElementById("lista").appendChild(li);
+    const mensagem = document.createElement("div");
+    mensagem.className = "doacao";
+
+    const titulo = document.createElement("strong");
+    titulo.textContent = item;
+
+    const texto = document.createElement("p");
+    texto.textContent = descricao;
+
+    mensagem.appendChild(titulo);
+    mensagem.appendChild(texto);
+
+    const lista = document.getElementById("lista");
+
+    if (lista.querySelector("p")) {
+        lista.innerHTML = "";
+    }
+
+    lista.appendChild(mensagem);
 
     this.reset();
 });
