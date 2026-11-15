@@ -1,0 +1,107 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Doações Solidárias</title>
+
+<style>
+body {
+    font-family: Arial, sans-serif;
+    background: #f2f5f2;
+    color: #222;
+    padding: 25px;
+}
+
+header {
+    background: #247a4b;
+    color: white;
+    padding: 25px;
+    text-align: center;
+    border-radius: 10px;
+}
+
+main {
+    background: white;
+    padding: 20px;
+    margin-top: 20px;
+    border-radius: 10px;
+}
+
+input, button {
+    padding: 12px;
+    margin: 7px 0;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+button {
+    background: #247a4b;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+.contraste {
+    background: black;
+    color: yellow;
+}
+
+.contraste main {
+    background: #222;
+    color: yellow;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <h1>Doações Solidárias ❤️</h1>
+    <p>Ajude quem precisa. Sua doação transforma vidas!</p>
+</header>
+
+<main>
+    <button onclick="document.body.classList.toggle('contraste')">
+        Ativar alto contraste
+    </button>
+
+    <button onclick="document.body.style.fontSize='22px'">
+        Aumentar fonte
+    </button>
+
+    <h2>Cadastre uma doação</h2>
+
+    <form id="formulario">
+        <label>Nome do item:</label>
+        <input id="item" type="text" placeholder="Ex: Cesta básica" required>
+
+        <label>Descrição:</label>
+        <input id="descricao" type="text" placeholder="Descreva a doação">
+
+        <button type="submit">Cadastrar doação</button>
+    </form>
+
+    <h2>Doações disponíveis</h2>
+    <ul id="lista"></ul>
+</main>
+
+<script>
+document.getElementById("formulario").addEventListener("submit", function(event) {
+    event.preventDefault();
+
+    const item = document.getElementById("item").value;
+    const descricao = document.getElementById("descricao").value;
+
+    const li = document.createElement("li");
+    li.textContent = item + " - " + descricao;
+
+    document.getElementById("lista").appendChild(li);
+
+    this.reset();
+});
+</script>
+
+</body>
+</html>
