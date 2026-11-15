@@ -1,0 +1,22 @@
+
+name: pa10
+
+on:
+  push:
+    branches: [main, desenvolvimento]
+  pull_request:
+    branches: [main]
+
+jobs:
+  verificar:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Baixar codigo
+        uses: actions/checkout@v4
+
+      - name: Verificar arquivos do projeto
+        run: |
+          test -f index.html
+          test -f README.md
+          echo "Verificacao concluida com sucesso!"
